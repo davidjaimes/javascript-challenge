@@ -1,7 +1,5 @@
 // from data.js
 var tableData = data;
-// Get a reference to the table body
-var tbody = d3.select("tbody");
 // grab reference to the input element
 var button = d3.select("#filter-btn");
 
@@ -16,10 +14,20 @@ button.on("click", function() {
 
   // Conditional check for zero entries
   if (filteredData.length === 0) {
-    console.log("Dang! No UFO sigthing for this date:", inputText)
+    var thead = d3.select("thead");
+    thead.html("");
+    thead.append("h3").text(`Sorry, no UFO sigthing(s) for ${inputText}.`);
   }
-  // call filterSightings function
-  filteredData.forEach(function(obj) {
-    console.log(obj)
-  })
+  else {
+    // call filterSightings function
+    filteredData.forEach((sightings) => {
+      // Get a reference to the table body
+      var tbody = d3.select("tbody");
+      var row = tbody.append("tr");
+      Object.entries(sightings).forEach(([key, value]) => {
+        var cell = row.append("td");
+        cell.text(value);
+      })
+    })
+  }
 })
